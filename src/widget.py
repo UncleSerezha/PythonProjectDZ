@@ -24,3 +24,9 @@ def mask_account_card(line_with_number: Union[str]) -> str:
             else:
                 continue
     return " ".join(mask_number)
+
+def get_date (date: Union[str]) -> str:
+    x = date.split("-")
+    return f"{x[2][0:2]}.{x[1]}.{x[0]}"
+
+
