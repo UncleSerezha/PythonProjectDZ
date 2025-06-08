@@ -25,8 +25,8 @@ def mask_account_card(line_with_number: Union[str]) -> str:
                 continue
     return " ".join(mask_number)
 
-def get_date (date: Union[str]) -> str:
+
+def get_date(date: Union[str]) -> str:
+    """строка с датой в формате ДД.ММ.ГГГГ"""
     x = date.split("-")
     return f"{x[2][0:2]}.{x[1]}.{x[0]}"
-
-
