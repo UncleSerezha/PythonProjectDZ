@@ -11,7 +11,7 @@ def filter_by_state(list_dict: list, state: str = "EXECUTED") -> list:
 
 
 def sort_by_date(list_dict: list, sort_: str = "True") -> list:
-    """Функция сортировки по дате."""
+    """Функция сортировки по дате"""
     if sort_ == "True":
         return sorted(list_dict, key=lambda x: x["date"], reverse=True)
     else:
