@@ -5,8 +5,6 @@ def filter_by_state(list_dict: list[dict], state: str = "EXECUTED") -> list[dict
     for i in list_dict:
         if i["state"] == state:
             new_list.append(i)
-        else:
-            continue
     return new_list
 
 
