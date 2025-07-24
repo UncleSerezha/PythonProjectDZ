@@ -2,29 +2,46 @@ import time
 from functools import wraps
 
 
-def log(filename="consol"):
+def log(filename=None):
+    """функция логирующая начало и конец выполнения,
+    а также ее результаты или возникшие ошибки."""
+
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
             try:
                 time_1 = time.time()
                 time_2 = time.time()
-                print(f"Начало: {time_1}")
                 result = func(*args, **kwargs)
                 name_func = func.__name__
-                if filename == "consol":
-                    print(f"Функция {name_func} ок. Результат: {result}")
+                if filename:
+                    file = open(filename, "a", encoding="utf-8")
+                    file.write(f"Начало: {time_1}" + "\n")
+                    file.write(f"Функция {name_func} ок. Результат: {result}" + "\n")
+                    file.write(f"Конец: {time_2}" + "\n")
+                    file.write("\n")
+                    file.close()
                 else:
+                    print(f"Начало: {time_1}")
                     print(f"{name_func} ok. Результат: {func(*args, **kwargs)}")
+                    print(f"Конец: {time_2}")
             except Exception as e:
                 result = None
-                print(f"{func.__name__} error: {str(e)}. Inputs: {args}, {kwargs}")
+                print(f"Начало: {time_1}")
+                print(f"{func.__name__} error: {e}. Inputs: {args}, {kwargs}")
+                print(f"Конец: {time_2}")
             except ZeroDivisionError:
                 result = None
+                print(f"Начало: {time_1}")
                 print(f"{func.__name__} error: ZeroDivisionError. Inputs: {args}, {kwargs}")
-            print(f"Конец: {time_2}")
+                print(f"Конец: {time_2}")
             return result
 
         return wrapper
 
     return decorator
+@log()
+def my_function(x, y):
+    return x + y
+
+my_function(1, 2)

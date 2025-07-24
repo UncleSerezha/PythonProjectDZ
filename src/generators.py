@@ -12,7 +12,7 @@ def filter_by_currency(transactions: list[dict], currency: Union[str]):
         x += 1
 
 
-def transaction_descriptions(transactions: list[dict]) :
+def transaction_descriptions(transactions: list[dict]):
     """Генератор, который принимает список словарей с транзакциями и возвращает описание каждой операции по очереди."""
     result = [x["description"] for x in transactions]
     x = 0
