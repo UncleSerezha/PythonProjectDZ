@@ -60,7 +60,7 @@ if __name__ == "__main__":
 
 
 @patch("requests.get")
-def test_eur_transaction(mock_get):
+def test_eur_transaction_400(mock_get):
     mock_get.return_value.status_code = 400
     assert transaction_amount(
         [
@@ -74,7 +74,7 @@ def test_eur_transaction(mock_get):
                 "to": "Счет 35383033474447895560",
             }
         ]
-    ) == ("Запрос содержит синтаксическую " "ошибку или неверные параметры.")
+    ) == ("Запрос содержит синтаксическую ошибку или неверные параметры.")
 
 
 if __name__ == "__main__":
@@ -82,9 +82,9 @@ if __name__ == "__main__":
 
 
 @patch("requests.get")
-def test_eur_transaction(mock_get):
+def test_eur_transaction_500(mock_get):
     mock_get.return_value.status_code = 500
-    assert transaction_amount[
+    assert transaction_amount([
         {
             "id": 41428829,
             "state": "EXECUTED",
@@ -94,7 +94,7 @@ def test_eur_transaction(mock_get):
             "from": "MasterCard 7158300734726758",
             "to": "Счет 35383033474447895560",
         }
-    ] == ("На стороне сервера произошла непредвиденная" " ошибка, которая не позволила выполнить " "запрос.")
+    ]) == "На стороне сервера произошла непредвиденная ошибка, которая не позволила выполнить запрос."
 
 
 if __name__ == "__main__":
