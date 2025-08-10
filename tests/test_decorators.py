@@ -7,6 +7,7 @@ from src.decorators import log
 def my_function(x, y):
     return x / y
 
+
 def test_my_function_success(capsys):
     result = my_function(4, 2)
     assert result == 2
@@ -25,6 +26,8 @@ def test_decorator_cupsys(capsys):
 @log()
 def faulty_function(x, y):
     return x / y
+
+
 def test_faulty_function_logs_error(capsys):
     faulty_function(1, 0)
     captured = capsys.readouterr()
