@@ -17,7 +17,7 @@ if __name__ == "__main__":
 
 class TestTransactionAmount(unittest.TestCase):
     def test_rub_transaction(self):
-        transaction = [{"operationAmount": {"amount": "1000", "currency": {"code": "RUB"}}}]
+        transaction = {"operationAmount": {"amount": "1000", "currency": {"code": "RUB"}}}
         result = transaction_amount(transaction)
         self.assertEqual(result, 1000.0)
 
@@ -39,17 +39,15 @@ def test_eur_transaction(mock_get):
     }
     assert (
         transaction_amount(
-            [
-                {
-                    "id": 41428829,
-                    "state": "EXECUTED",
-                    "date": "2019-07-03T18:35:29.512364",
-                    "operationAmount": {"amount": "8221.37", "currency": {"name": "EUR", "code": "EUR"}},
-                    "description": "Перевод организации",
-                    "from": "MasterCard 7158300734726758",
-                    "to": "Счет 35383033474447895560",
-                }
-            ]
+            {
+                "id": 41428829,
+                "state": "EXECUTED",
+                "date": "2019-07-03T18:35:29.512364",
+                "operationAmount": {"amount": "8221.37", "currency": {"name": "EUR", "code": "EUR"}},
+                "description": "Перевод организации",
+                "from": "MasterCard 7158300734726758",
+                "to": "Счет 35383033474447895560",
+            }
         )
         == 1000.11
     )
@@ -63,17 +61,15 @@ if __name__ == "__main__":
 def test_eur_transaction_400(mock_get):
     mock_get.return_value.status_code = 400
     assert transaction_amount(
-        [
-            {
-                "id": 41428829,
-                "state": "EXECUTED",
-                "date": "2019-07-03T18:35:29.512364",
-                "operationAmount": {"amount": "8221.37", "currency": {"name": "EUR", "code": "EUR"}},
-                "description": "Перевод организации",
-                "from": "MasterCard 7158300734726758",
-                "to": "Счет 35383033474447895560",
-            }
-        ]
+        {
+            "id": 41428829,
+            "state": "EXECUTED",
+            "date": "2019-07-03T18:35:29.512364",
+            "operationAmount": {"amount": "8221.37", "currency": {"name": "EUR", "code": "EUR"}},
+            "description": "Перевод организации",
+            "from": "MasterCard 7158300734726758",
+            "to": "Счет 35383033474447895560",
+        }
     ) == ("Запрос содержит синтаксическую ошибку или неверные параметры.")
 
 
@@ -84,17 +80,20 @@ if __name__ == "__main__":
 @patch("requests.get")
 def test_eur_transaction_500(mock_get):
     mock_get.return_value.status_code = 500
-    assert transaction_amount([
-        {
-            "id": 41428829,
-            "state": "EXECUTED",
-            "date": "2019-07-03T18:35:29.512364",
-            "operationAmount": {"amount": "8221.37", "currency": {"name": "EUR", "code": "EUR"}},
-            "description": "Перевод организации",
-            "from": "MasterCard 7158300734726758",
-            "to": "Счет 35383033474447895560",
-        }
-    ]) == "На стороне сервера произошла непредвиденная ошибка, которая не позволила выполнить запрос."
+    assert (
+        transaction_amount(
+            {
+                "id": 41428829,
+                "state": "EXECUTED",
+                "date": "2019-07-03T18:35:29.512364",
+                "operationAmount": {"amount": "8221.37", "currency": {"name": "EUR", "code": "EUR"}},
+                "description": "Перевод организации",
+                "from": "MasterCard 7158300734726758",
+                "to": "Счет 35383033474447895560",
+            }
+        )
+        == "На стороне сервера произошла непредвиденная ошибка, которая не позволила выполнить запрос."
+    )
 
 
 if __name__ == "__main__":

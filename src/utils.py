@@ -26,16 +26,19 @@ def transaction_amount(transaction: dict):
     """функция, которая принимает на вход транзакцию и возвращает сумму транзакции (amount) в рублях,
     тип данных — float. Если транзакция была в USD или EUR, происходит обращение к внешнему API для получения
     текущего курса валют и конвертации суммы операции в рубли."""
-    for i in transaction:
-        if i == {}:
-            return "Нет транзакции!"
-        elif i["operationAmount"]["currency"]["code"] == "RUB":
-            return float(i["operationAmount"]["amount"])
-        elif i["operationAmount"]["currency"]["code"] == "USD" or i["operationAmount"]["currency"]["code"] == "EUR":
-            value = float(i["operationAmount"]["amount"])
-            if i["operationAmount"]["currency"]["code"] == "EUR":
+    if transaction == {}:
+        return "Нет транзакции!"
+    else:
+        if transaction["operationAmount"]["currency"]["code"] == "RUB":
+            return float(transaction["operationAmount"]["amount"])
+        elif (
+            transaction["operationAmount"]["currency"]["code"] == "USD"
+            or transaction["operationAmount"]["currency"]["code"] == "EUR"
+        ):
+            value = float(transaction["operationAmount"]["amount"])
+            if transaction["operationAmount"]["currency"]["code"] == "EUR":
                 url = f"https://api.apilayer.com/exchangerates_data/convert?to=RUB&from=EUR&amount={value}"
-            elif i["operationAmount"]["currency"]["code"] == "USD":
+            elif transaction["operationAmount"]["currency"]["code"] == "USD":
                 url = f"https://api.apilayer.com/exchangerates_data/convert?to=RUB&from=USD&amount={value}"
             payload = {}
             headers = {"apikey": f"{API_KEY}"}
